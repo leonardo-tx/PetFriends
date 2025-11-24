@@ -1,0 +1,26 @@
+name: petfriends
+services:
+  pedido-service:
+    build:
+      dockerfile: petfriends-pedido/Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      MONGODB_URI: mongodb://pedido-db:27017/pedido_db
+      MONGODB_DATABASE: pedido_db
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      pedido-db:
+        condition: service_healthy
+
+  pedido-db:
+    image: mongo:8.2.2-rc0-noble
+    expose:
+      - "27017:27017"
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
