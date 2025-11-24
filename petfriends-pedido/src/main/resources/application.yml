@@ -5,6 +5,16 @@ spring:
   application:
     name: petfriends-pedido
 
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DATABASE}
+      auto-index-creation: true
+
+axon:
+  axonserver:
+    enabled: false
+
 management:
   endpoints:
     web:
