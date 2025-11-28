@@ -5,6 +5,21 @@ spring:
   application:
     name: petfriends-almoxarifado
 
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DATABASE}
+      auto-index-creation: true
+
+  cloud:
+    stream:
+      function:
+        autodetect: false
+
+axon:
+  axonserver:
+    enabled: false
+
 management:
   endpoints:
     web:

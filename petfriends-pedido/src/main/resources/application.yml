@@ -11,6 +11,11 @@ spring:
       database: ${MONGODB_DATABASE}
       auto-index-creation: true
 
+  cloud:
+    stream:
+      function:
+        autodetect: false
+
 axon:
   axonserver:
     enabled: false

@@ -1,7 +1,6 @@
 package br.com.petfriends.pedido.infra.config;
 
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import org.axonframework.eventsourcing.eventstore.EmbeddedEventStore;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
 import org.axonframework.eventsourcing.eventstore.EventStore;
@@ -9,21 +8,24 @@ import org.axonframework.extensions.mongo.DefaultMongoTemplate;
 import org.axonframework.extensions.mongo.MongoTemplate;
 import org.axonframework.extensions.mongo.eventsourcing.eventstore.MongoEventStorageEngine;
 import org.axonframework.serialization.Serializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AxonMongoConfig {
     private final MongoClient mongoClient;
+    private final String databaseName;
 
-    public AxonMongoConfig(MongoClient mongoClient) {
+    public AxonMongoConfig(MongoClient mongoClient, @Value("${MONGODB_DATABASE}") String databaseName) {
         this.mongoClient = mongoClient;
+        this.databaseName = databaseName;
     }
 
     @Bean
     public MongoTemplate axonMongoTemplate() {
         return DefaultMongoTemplate.builder()
-                .mongoDatabase(mongoClient, System.getenv("MONGODB_DATABASE"))
+                .mongoDatabase(mongoClient, databaseName)
                 .domainEventsCollectionName("axon_events")
                 .snapshotEventsCollectionName("axon_snapshots")
                 .build();
