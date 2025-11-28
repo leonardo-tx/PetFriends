@@ -2,8 +2,12 @@ package br.com.petfriends.pedido.core.model;
 
 import br.com.petfriends.pedido.core.command.CancelarPedidoCommand;
 import br.com.petfriends.pedido.core.command.CriarPedidoCommand;
+import br.com.petfriends.pedido.core.command.PagarPedidoCommand;
 import br.com.petfriends.pedido.core.event.PedidoCanceladoEvent;
 import br.com.petfriends.pedido.core.event.PedidoCriadoEvent;
+import br.com.petfriends.pedido.core.event.PedidoPagoEvent;
+import br.com.petfriends.pedido.core.exception.ClienteIdentificadorNuloException;
+import br.com.petfriends.pedido.core.exception.PedidoImpagavelException;
 import br.com.petfriends.pedido.core.exception.PedidoIncancelavelException;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -38,6 +42,9 @@ public class Pedido {
 
     @CommandHandler
     public Pedido(CriarPedidoCommand command) {
+        if (command.getClienteId() == null) {
+            throw new ClienteIdentificadorNuloException();
+        }
         List<ItemPedido> itens = command.getItemPedidoCommands()
                 .stream()
                 .map(c -> new ItemPedido(
@@ -79,6 +86,15 @@ public class Pedido {
         AggregateLifecycle.apply(event);
     }
 
+    @CommandHandler
+    public void on(PagarPedidoCommand command) {
+        if (status != PedidoStatus.CRIADO) {
+            throw new PedidoImpagavelException();
+        }
+        PedidoPagoEvent event = new PedidoPagoEvent(command.getId(), Instant.now());
+        AggregateLifecycle.apply(event);
+    }
+
     @EventSourcingHandler
     public void on(PedidoCriadoEvent event) {
         this.id = event.getId();
@@ -90,5 +106,10 @@ public class Pedido {
     @EventSourcingHandler
     public void on(PedidoCanceladoEvent event) {
         this.status = PedidoStatus.CANCELADO;
+    }
+
+    @EventSourcingHandler
+    public void on(PedidoPagoEvent event) {
+        this.status = PedidoStatus.EM_SEPARACAO;
     }
 }

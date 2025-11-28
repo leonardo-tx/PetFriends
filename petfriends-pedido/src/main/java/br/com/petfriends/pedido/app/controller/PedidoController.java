@@ -7,11 +7,9 @@ import br.com.petfriends.pedido.app.response.mapper.PedidoViewMapper;
 import br.com.petfriends.pedido.core.command.AdicionarItemPedidoCommand;
 import br.com.petfriends.pedido.core.command.CancelarPedidoCommand;
 import br.com.petfriends.pedido.core.command.CriarPedidoCommand;
+import br.com.petfriends.pedido.core.command.PagarPedidoCommand;
 import br.com.petfriends.pedido.core.model.Pedido;
-import br.com.petfriends.pedido.core.port.in.CancelarPedidoUseCase;
-import br.com.petfriends.pedido.core.port.in.CriarPedidoUseCase;
-import br.com.petfriends.pedido.core.port.in.GetPedidoEventosUseCase;
-import br.com.petfriends.pedido.core.port.in.GetPedidoUseCase;
+import br.com.petfriends.pedido.core.port.in.*;
 import br.com.petfriends.pedido.core.query.BuscarPedidoEventosPeloIdQuery;
 import br.com.petfriends.pedido.core.query.BuscarPedidoPeloIdQuery;
 import org.springframework.http.HttpStatus;
@@ -29,6 +27,7 @@ public class PedidoController {
     private final GetPedidoUseCase getPedidoUseCase;
     private final CriarPedidoUseCase criarPedidoUseCase;
     private final CancelarPedidoUseCase cancelarPedidoUseCase;
+    private final PagarPedidoUseCase pagarPedidoUseCase;
     private final PedidoViewMapper pedidoViewMapper;
 
     public PedidoController(
@@ -36,12 +35,14 @@ public class PedidoController {
             GetPedidoUseCase getPedidoUseCase,
             CriarPedidoUseCase criarPedidoUseCase,
             CancelarPedidoUseCase cancelarPedidoUseCase,
+            PagarPedidoUseCase pagarPedidoUseCase,
             PedidoViewMapper pedidoViewMapper
     ) {
         this.getPedidoEventosUseCase = getPedidoEventosUseCase;
         this.getPedidoUseCase = getPedidoUseCase;
         this.criarPedidoUseCase = criarPedidoUseCase;
         this.cancelarPedidoUseCase = cancelarPedidoUseCase;
+        this.pagarPedidoUseCase = pagarPedidoUseCase;
         this.pedidoViewMapper = pedidoViewMapper;
     }
 
@@ -85,6 +86,16 @@ public class PedidoController {
     ) {
         CancelarPedidoCommand command = new CancelarPedidoCommand(id);
         return cancelarPedidoUseCase.cancelar(command).thenApply(v ->
+                ApiResponse.success(null).createResponse(HttpStatus.OK)
+        );
+    }
+
+    @PostMapping("/{id}/pagar")
+    public CompletableFuture<ResponseEntity<ApiResponse<Object>>> pagarPedido(
+            @PathVariable("id") UUID id
+    ) {
+        PagarPedidoCommand command = new PagarPedidoCommand(id);
+        return pagarPedidoUseCase.pagar(command).thenApply(v ->
                 ApiResponse.success(null).createResponse(HttpStatus.OK)
         );
     }

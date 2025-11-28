@@ -2,6 +2,7 @@ package br.com.petfriends.pedido.infra.adapter.persistence.projection;
 
 import br.com.petfriends.pedido.core.event.PedidoCanceladoEvent;
 import br.com.petfriends.pedido.core.event.PedidoCriadoEvent;
+import br.com.petfriends.pedido.core.event.PedidoPagoEvent;
 import br.com.petfriends.pedido.core.model.Pedido;
 import br.com.petfriends.pedido.infra.adapter.persistence.entity.PedidoEntity;
 import br.com.petfriends.pedido.infra.adapter.persistence.mapper.PedidoInfraMapper;
@@ -10,6 +11,7 @@ import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class PedidoProjection {
@@ -32,15 +34,28 @@ public class PedidoProjection {
 
     @EventHandler
     public void on(PedidoCanceladoEvent event) {
-        Optional<Pedido> pedidoOptional = pedidoMongoRepository.findById(event.getId())
-                .map(pedidoInfraMapper::toModel);
-        if (pedidoOptional.isEmpty()) {
-            throw new IllegalStateException("Não foi possível continuar com a projeção do agregado.");
-        }
-        Pedido pedido = pedidoOptional.get();
+        Pedido pedido = resgatarPedidoSalvo(event.getId());
         pedido.on(event);
 
         PedidoEntity entity = pedidoInfraMapper.toEntity(pedido);
         pedidoMongoRepository.save(entity);
+    }
+
+    @EventHandler
+    public void on(PedidoPagoEvent event) {
+        Pedido pedido = resgatarPedidoSalvo(event.getId());
+        pedido.on(event);
+
+        PedidoEntity entity = pedidoInfraMapper.toEntity(pedido);
+        pedidoMongoRepository.save(entity);
+    }
+
+    private Pedido resgatarPedidoSalvo(UUID id) {
+        Optional<Pedido> pedidoOptional = pedidoMongoRepository.findById(id)
+                .map(pedidoInfraMapper::toModel);
+        if (pedidoOptional.isEmpty()) {
+            throw new IllegalStateException("Não foi possível continuar com a projeção do agregado.");
+        }
+        return pedidoOptional.get();
     }
 }

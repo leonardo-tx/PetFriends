@@ -8,6 +8,8 @@ COPY petfriends-transporte/src petfriends-transporte/src
 COPY petfriends-transporte/pom.xml petfriends-transporte/pom.xml
 COPY petfriends-pedido/src petfriends-pedido/src
 COPY petfriends-pedido/pom.xml petfriends-pedido/pom.xml
+COPY petfriends-gateway/src petfriends-gateway/src
+COPY petfriends-gateway/pom.xml petfriends-gateway/pom.xml
 COPY pom.xml pom.xml
 
 RUN mvn clean install -DskipTests
