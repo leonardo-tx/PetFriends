@@ -2,8 +2,9 @@ package br.com.petfriends.pedido.core.model;
 
 public enum PedidoStatus {
     CRIADO,
+    INICIADO,
     EM_SEPARACAO,
-    PRONTO_PARA_TRANSPORTE,
+    SEPARADO,
     ENVIADO,
     ENTREGUE,
     CANCELADO

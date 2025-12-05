@@ -5,5 +5,12 @@ import br.com.petfriends.pedido.core.model.PedidoStatus;
 import java.util.List;
 import java.util.UUID;
 
-public record PedidoViewDTO(UUID id, String clienteId, PedidoStatus status, List<ItemPedidoViewDTO> itens) {
+public record PedidoViewDTO(
+        UUID id,
+        String clienteId,
+        PedidoStatus status,
+        EnderecoViewDTO endereco,
+        String entregaId,
+        List<ItemPedidoViewDTO> itens
+) {
 }

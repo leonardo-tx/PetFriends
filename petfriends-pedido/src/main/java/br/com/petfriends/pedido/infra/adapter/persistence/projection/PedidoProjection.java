@@ -1,8 +1,6 @@
 package br.com.petfriends.pedido.infra.adapter.persistence.projection;
 
-import br.com.petfriends.pedido.core.event.PedidoCanceladoEvent;
-import br.com.petfriends.pedido.core.event.PedidoCriadoEvent;
-import br.com.petfriends.pedido.core.event.PedidoPagoEvent;
+import br.com.petfriends.pedido.core.event.*;
 import br.com.petfriends.pedido.core.model.Pedido;
 import br.com.petfriends.pedido.infra.adapter.persistence.entity.PedidoEntity;
 import br.com.petfriends.pedido.infra.adapter.persistence.mapper.PedidoInfraMapper;
@@ -33,6 +31,15 @@ public class PedidoProjection {
     }
 
     @EventHandler
+    public void on(PedidoIniciadoEvent event) {
+        Pedido pedido = resgatarPedidoSalvo(event.getId());
+        pedido.on(event);
+
+        PedidoEntity entity = pedidoInfraMapper.toEntity(pedido);
+        pedidoMongoRepository.save(entity);
+    }
+
+    @EventHandler
     public void on(PedidoCanceladoEvent event) {
         Pedido pedido = resgatarPedidoSalvo(event.getId());
         pedido.on(event);
@@ -43,6 +50,42 @@ public class PedidoProjection {
 
     @EventHandler
     public void on(PedidoPagoEvent event) {
+        Pedido pedido = resgatarPedidoSalvo(event.getId());
+        pedido.on(event);
+
+        PedidoEntity entity = pedidoInfraMapper.toEntity(pedido);
+        pedidoMongoRepository.save(entity);
+    }
+
+    @EventHandler
+    public void on(PedidoSeparadoEvent event) {
+        Pedido pedido = resgatarPedidoSalvo(event.getId());
+        pedido.on(event);
+
+        PedidoEntity entity = pedidoInfraMapper.toEntity(pedido);
+        pedidoMongoRepository.save(entity);
+    }
+
+    @EventHandler
+    public void on(PedidoEnviadoEvent event) {
+        Pedido pedido = resgatarPedidoSalvo(event.getId());
+        pedido.on(event);
+
+        PedidoEntity entity = pedidoInfraMapper.toEntity(pedido);
+        pedidoMongoRepository.save(entity);
+    }
+
+    @EventHandler
+    public void on(PedidoEntregueEvent event) {
+        Pedido pedido = resgatarPedidoSalvo(event.getId());
+        pedido.on(event);
+
+        PedidoEntity entity = pedidoInfraMapper.toEntity(pedido);
+        pedidoMongoRepository.save(entity);
+    }
+
+    @EventHandler
+    public void on(EntregaAdicionadaAoPedidoEvent event) {
         Pedido pedido = resgatarPedidoSalvo(event.getId());
         pedido.on(event);
 

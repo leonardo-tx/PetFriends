@@ -74,7 +74,17 @@ public class PedidoController {
                         d.valorUnitario(),
                         d.quantidade()
                 )).toList();
-        CriarPedidoCommand command = new CriarPedidoCommand(form.clienteId(), adicionarItemCommands);
+        CriarPedidoCommand command = new CriarPedidoCommand(
+                form.clienteId(),
+                form.endereco().rua(),
+                form.endereco().numero(),
+                form.endereco().complemento(),
+                form.endereco().bairro(),
+                form.endereco().cidade(),
+                form.endereco().estado(),
+                form.endereco().cep(),
+                adicionarItemCommands
+        );
         return criarPedidoUseCase.criar(command).thenApply(id ->
                 ApiResponse.success(id).createResponse(HttpStatus.CREATED)
         );

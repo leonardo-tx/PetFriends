@@ -12,11 +12,61 @@ spring:
       auto-index-creation: true
 
   cloud:
+    function:
+      definition: pedidoReservaConcluido;pedidoReservaFalhou;entregaCriada;entregaSeparada;entregaTransportada;entregaEntregue
+
     stream:
-      function:
-        autodetect: false
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS}
+
+      bindings:
+        pedido-pago-out-0:
+          destination: pedido-pago-events
+          content-type: application/json
+
+        pedido-criado-out-0:
+          destination: pedido-criado-events
+          content-type: application/json
+
+        pedido-cancelado-out-0:
+          destination: pedido-cancelado-events
+          content-type: application/json
+
+        pedido-separado-out-0:
+          destination: pedido-separado-events
+          content-type: application/json
+
+        pedidoReservaConcluido-in-0:
+          destination: pedido-reserva-concluido-events
+          group: petfriends-pedido
+
+        pedidoReservaFalhou-in-0:
+          destination: pedido-reserva-falhou-events
+          group: petfriends-pedido
+
+        entregaCriada-in-0:
+          destination: entrega-criada-events
+          group: petfriends-pedido
+
+        entregaSeparada-in-0:
+          destination: entrega-separada-events
+          group: petfriends-pedido
+
+        entregaTransportada-in-0:
+          destination: entrega-transportada-events
+          group: petfriends-pedido
+
+        entregaEntregue-in-0:
+          destination: entrega-entregue-events
+          group: petfriends-pedido
 
 axon:
+  serializer:
+    general: jackson
+    events: jackson
+    messages: jackson
+
   axonserver:
     enabled: false
 
