@@ -2,6 +2,8 @@ package br.com.petfriends.pedido.core.model;
 
 import br.com.petfriends.pedido.core.exception.DinheiroNegativoException;
 import br.com.petfriends.pedido.core.exception.DinheiroNuloException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,11 +21,13 @@ public final class Dinheiro {
         this.valor = valor.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static Dinheiro valueOf(BigDecimal valor) {
-        return new Dinheiro(valor);
-    }
-
+    @JsonValue
     public BigDecimal getValor() {
         return valor;
+    }
+
+    @JsonCreator
+    public static Dinheiro valueOf(BigDecimal valor) {
+        return new Dinheiro(valor);
     }
 }

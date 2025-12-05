@@ -63,8 +63,7 @@ class FindPedidoPortTest {
         );
         pedidoMongoRepository.save(pedidoEntity);
 
-        BuscarPedidoPeloIdQuery query = new BuscarPedidoPeloIdQuery(pedidoEntity.id());
-        Optional<Pedido> result = findPedidoAdapter.findById(query);
+        Optional<Pedido> result = findPedidoAdapter.findById(pedidoEntity.id());
 
         assertTrue(result.isPresent());
         assertEquals(pedidoEntity.id(), result.get().getId());

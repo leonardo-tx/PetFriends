@@ -15,8 +15,8 @@ services:
     ports:
       - "8081:8081"
     environment:
-      MONGODB_URI: mongodb://almoxarifado-db:27017/almoxarifado_db
-      MONGODB_DATABASE: almoxarifado_db
+      MONGODB_URI: mongodb://almoxarifado-db:27017/almoxarifado
+      MONGODB_DATABASE: almoxarifado
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
@@ -32,8 +32,8 @@ services:
     ports:
       - "8082:8082"
     environment:
-      MONGODB_URI: mongodb://pedido-db:27017/pedido_db
-      MONGODB_DATABASE: pedido_db
+      MONGODB_URI: mongodb://pedido-db:27017/pedido
+      MONGODB_DATABASE: pedido
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
@@ -49,8 +49,8 @@ services:
     ports:
       - "8083:8083"
     environment:
-      MONGODB_URI: mongodb://transporte-db:27017/pedido_db
-      MONGODB_DATABASE: transporte_db
+      MONGODB_URI: mongodb://transporte-db:27017/transporte
+      MONGODB_DATABASE: transporte
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
@@ -113,16 +113,8 @@ services:
       start_period: 20s
 
   consul:
-    image: consul:1.15.4
+    image: hashicorp/consul:latest
     ports:
       - "8500:8500"
-    command: agent -dev -client=0.0.0.0
-    environment:
-      SPRING_CLOUD_CONSUL_HOST: consul
-      SPRING_CLOUD_CONSUL_PORT: 8500
-    healthcheck:
-      test: [ "CMD", "/usr/bin/kafka-ready", "broker", "9092", "20" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+      - "8600:8600/udp"
+    command: "agent -dev -client=0.0.0.0 -ui"

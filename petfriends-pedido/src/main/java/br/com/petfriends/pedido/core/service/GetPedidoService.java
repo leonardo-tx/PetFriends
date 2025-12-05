@@ -17,7 +17,7 @@ public class GetPedidoService implements GetPedidoUseCase {
 
     @Override
     public Pedido getById(BuscarPedidoPeloIdQuery query) {
-        return findPedidoPort.findById(query)
+        return findPedidoPort.findById(query.getId())
                 .orElseThrow(PedidoNaoEncontradoException::new);
     }
 }

@@ -8,6 +8,7 @@ import br.com.petfriends.pedido.infra.adapter.persistence.repository.PedidoMongo
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class FindPedidoAdapter implements FindPedidoPort {
@@ -20,8 +21,8 @@ public class FindPedidoAdapter implements FindPedidoPort {
     }
 
     @Override
-    public Optional<Pedido> findById(BuscarPedidoPeloIdQuery query) {
-        return pedidoMongoRepository.findById(query.getId())
+    public Optional<Pedido> findById(UUID id) {
+        return pedidoMongoRepository.findById(id)
                 .map(pedidoInfraMapper::toModel);
     }
 }
