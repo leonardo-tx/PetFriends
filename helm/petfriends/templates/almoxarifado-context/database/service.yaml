@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: "{{.Values.almoxarifado_db.name}}-svc"
+spec:
+  selector:
+    app: {{ .Values.almoxarifado_db.name }}
+  type: {{.Values.almoxarifado_db.service.type}}
+  ports:
+    - protocol: TCP
+      {{- if (eq .Values.almoxarifado_db.service.type "NodePort")}}
+      nodePort: {{.Values.almoxarifado_db.service.nodePort}}
+      {{- end}}
+      targetPort: {{.Values.almoxarifado_db.service.targetPort}}
+      port: {{.Values.almoxarifado_db.service.port}}

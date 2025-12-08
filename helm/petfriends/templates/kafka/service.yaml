@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: "{{.Values.kafka.name}}-svc"
+spec:
+  selector:
+    app: {{ .Values.kafka.name }}
+  type: {{.Values.kafka.service.broker.type}}
+  ports:
+    - protocol: TCP
+      {{- if (eq .Values.kafka.service.broker.type "NodePort")}}
+      nodePort: {{.Values.kafka.service.broker.nodePort}}
+      {{- end}}
+      targetPort: {{.Values.kafka.service.broker.targetPort}}
+      port: {{.Values.kafka.service.broker.port}}

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.petfriends_almoxarifado.name }}-deploy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.petfriends_almoxarifado.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.petfriends_almoxarifado.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.petfriends_almoxarifado.name }}
+    spec:
+      containers:
+        - name: {{ .Values.petfriends_almoxarifado.name }}
+          image: "{{ .Values.petfriends_almoxarifado.image }}:{{ .Values.petfriends_almoxarifado.tag }}"
+          imagePullPolicy: {{ .Values.petfriends_almoxarifado.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Values.petfriends_almoxarifado.name }}-cm"
+      restartPolicy: Always

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.petfriends_gateway.name }}-cm"
+  namespace: {{ .Release.Namespace }}
+data:
+  SERVICE_HOST: "{{ .Values.petfriends_gateway.name }}-svc"
+  SPRING_CLOUD_CONSUL_HOST: "{{ .Values.consul.name }}-svc"
+  SPRING_CLOUD_CONSUL_PORT: "{{ .Values.consul.service.http.port }}"

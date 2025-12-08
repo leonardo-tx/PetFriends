@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.petfriends_gateway.name }}-deploy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.petfriends_gateway.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.petfriends_gateway.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.petfriends_gateway.name }}
+    spec:
+      containers:
+        - name: {{ .Values.petfriends_gateway.name }}
+          image: "{{ .Values.petfriends_gateway.image }}:{{ .Values.petfriends_gateway.tag }}"
+          imagePullPolicy: {{ .Values.petfriends_gateway.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Values.petfriends_gateway.name }}-cm"
+      restartPolicy: Always

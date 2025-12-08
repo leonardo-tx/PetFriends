@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.consul.name }}-deploy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.consul.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.consul.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.consul.name }}
+    spec:
+      containers:
+        - name: {{ .Values.consul.name }}
+          image: "{{ .Values.consul.image }}:{{ .Values.consul.tag }}"
+          imagePullPolicy: {{ .Values.consul.imagePullPolicy }}
+          command: {{ .Values.consul.command | toJson }}
+      restartPolicy: Always

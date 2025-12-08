@@ -15,6 +15,13 @@ spring:
     function:
       definition: pedidoCriado;pedidoCancelado;pedidoSeparado
 
+    consul:
+      discovery:
+        health-check-path: /actuator/health
+        health-check-url: http://${SERVICE_HOST}:${server.port}/actuator/health
+        health-check-interval: 10s
+        prefer-ip-address: true
+
     stream:
       kafka:
         binder:

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: "{{.Values.kafka.name}}-hs"
+spec:
+  selector:
+    app: {{ .Values.kafka.name }}
+  clusterIP: None
+  ports:
+    - name: broker
+      port: {{ .Values.kafka.service.broker.port }}
+      targetPort: {{ .Values.kafka.service.broker.targetPort }}
+      protocol: TCP
+    - name: controller
+      port: {{ .Values.kafka.service.controller.port }}
+      targetPort: {{ .Values.kafka.service.controller.targetPort }}
+      protocol: TCP

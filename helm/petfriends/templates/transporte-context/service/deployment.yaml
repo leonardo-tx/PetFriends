@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.petfriends_transporte.name }}-deploy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.petfriends_transporte.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.petfriends_transporte.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.petfriends_transporte.name }}
+    spec:
+      containers:
+        - name: {{ .Values.petfriends_transporte.name }}
+          image: "{{ .Values.petfriends_transporte.image }}:{{ .Values.petfriends_transporte.tag }}"
+          imagePullPolicy: {{ .Values.petfriends_transporte.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Values.petfriends_transporte.name }}-cm"
+      restartPolicy: Always
