@@ -93,7 +93,7 @@ class FindAlmoxarifadoAdapterTest {
         Optional<Almoxarifado> result = findAlmoxarifadoAdapter.findFirstByItemDisponivel("item-1", 6);
 
         assertTrue(result.isPresent());
-        assertEquals(entity2.id(), result.get().getId()); // entity2 tem quantidade suficiente
+        assertEquals(entity2.id(), result.get().getId());
     }
 
     @Test
