@@ -22,7 +22,7 @@ public class ValidarCepViaCepAdapter implements ValidarCepPort {
 
     @Override
     public Mono<Boolean> cepExiste(CEP cep) {
-        String url = String.format(PROCURA_INFO_CEP_URL, cep.getValor());
+        String url = String.format(PROCURA_INFO_CEP_URL, cep.valor());
         return webClient.get()
                 .uri(url)
                 .retrieve()

@@ -9,7 +9,7 @@ public class ItemPedidoViewMapper {
     public ItemPedidoViewDTO toDTO(ItemPedido model) {
         return new ItemPedidoViewDTO(
                 model.getProdutoId(),
-                model.getValorUnitario().getValor(),
+                model.getValorUnitario().valor(),
                 model.getQuantidade()
         );
     }

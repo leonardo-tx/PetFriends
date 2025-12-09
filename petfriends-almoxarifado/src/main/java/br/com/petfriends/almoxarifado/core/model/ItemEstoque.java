@@ -66,14 +66,6 @@ public final class ItemEstoque {
         if (pedidoId == null) {
             throw new PedidoIdentificadorNuloException();
         }
-        Reserva reserva = reservas.get(pedidoId);
-        if (reserva == null) {
-            return;
-        }
-        int quantidade = reserva.getQuantidade();
-        if (quantidadeDisponivel < quantidade) {
-            throw new ItemQuantidadeNegativoException();
-        }
     }
 
     public void verificarAdicionarEstoque(int quantidade) {
@@ -83,27 +75,29 @@ public final class ItemEstoque {
     }
 
     public void adicionarReserva(String pedidoId, int quantidade) {
-        verificarAdicionarReserva(pedidoId, quantidade);
         Reserva reserva = new Reserva(pedidoId, quantidade);
         reservas.put(pedidoId, reserva);
         quantidadeReservada += quantidade;
     }
 
     public void liberarReserva(String pedidoId) {
-        verificarLiberarReserva(pedidoId);
         Reserva reserva = reservas.remove(pedidoId);
+        if (reserva == null) {
+            return;
+        }
         quantidadeReservada -= reserva.getQuantidade();
     }
 
     public void consumirEstoque(String pedidoId) {
-        verificarConsumirEstoque(pedidoId);
         Reserva reserva = reservas.remove(pedidoId);
+        if (reserva == null) {
+            return;
+        }
         quantidadeReservada -= reserva.getQuantidade();
         quantidadeDisponivel -= reserva.getQuantidade();
     }
 
     public void adicionarEstoque(int quantidade) {
-        verificarAdicionarEstoque(quantidade);
         quantidadeDisponivel += quantidade;
     }
 

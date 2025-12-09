@@ -47,17 +47,17 @@ public class Pedido {
                 .stream()
                 .map(c -> new ItemPedido(
                         c.getProdutoId(),
-                        Dinheiro.valueOf(c.getValorUnitario()),
+                        new Dinheiro(c.getValorUnitario()),
                         c.getQuantidade()
                 )).collect(Collectors.toCollection(ArrayList::new));
-        Endereco endereco = Endereco.valueOf(
+        Endereco endereco = new Endereco(
                 command.getRua(),
                 command.getNumero(),
                 command.getComplemento(),
                 command.getBairro(),
                 command.getCidade(),
                 command.getEstado(),
-                CEP.valueOf(command.getCep())
+                new CEP(command.getCep())
         );
         PedidoCriadoEvent event = new PedidoCriadoEvent(
                 UUID.randomUUID(),

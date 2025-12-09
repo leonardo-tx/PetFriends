@@ -2,13 +2,14 @@ package br.com.petfriends.pedido.core.model;
 
 import br.com.petfriends.pedido.core.exception.CEPNuloException;
 import br.com.petfriends.pedido.core.exception.CEPTamanhoInvalidoException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-public final class CEP {
+public record CEP(@JsonValue String valor) {
     public static final int TAMANHO = 8;
 
-    private final String valor;
-
-    private CEP(String valor) {
+    @JsonCreator
+    public CEP {
         if (valor == null) {
             throw new CEPNuloException();
         }
@@ -16,14 +17,6 @@ public final class CEP {
         if (normalized.length() != TAMANHO) {
             throw new CEPTamanhoInvalidoException();
         }
-        this.valor = valor;
-    }
-
-    public String getValor() {
-        return valor;
-    }
-
-    public static CEP valueOf(String valor) {
-        return new CEP(valor);
+        valor = normalized;
     }
 }

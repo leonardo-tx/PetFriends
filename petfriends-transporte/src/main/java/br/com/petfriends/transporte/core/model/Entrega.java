@@ -83,7 +83,7 @@ public class Entrega {
         if (remessa == null) {
             throw new RemessaNaoEncontradaException();
         }
-        remessa.separar();
+        remessa.verificarSeparar();
         RemessaSeparadaEvent event = new RemessaSeparadaEvent(
                 id,
                 Instant.now(),
@@ -109,7 +109,7 @@ public class Entrega {
         if (remessa == null) {
             throw new RemessaNaoEncontradaException();
         }
-        remessa.transportar();
+        remessa.verificarTransportar();
         RemessaTransportadaEvent event = new RemessaTransportadaEvent(
                 id,
                 Instant.now(),
@@ -129,7 +129,7 @@ public class Entrega {
         if (remessa == null) {
             throw new RemessaNaoEncontradaException();
         }
-        remessa.entregar();
+        remessa.verificarEntregar();
         RemessaEntregueEvent event = new RemessaEntregueEvent(
                 id,
                 Instant.now(),
@@ -152,7 +152,7 @@ public class Entrega {
         if (remessa == null) {
             throw new RemessaNaoEncontradaException();
         }
-        remessa.criarOcorrencia();
+        remessa.verificarCriarOcorrencia();
         RemessaOcorrenciaCriadaEvent event = new RemessaOcorrenciaCriadaEvent(
                 id,
                 Instant.now(),
@@ -185,30 +185,26 @@ public class Entrega {
 
     @EventSourcingHandler
     public void on(RemessaSeparadaEvent event) {
-        Remessa remessa = remessas.get(event.getAlmoxarifadoId())
-                .separar();
-        this.remessas.put(remessa.getAlmoxarifadoId(), remessa);
+        Remessa remessa = remessas.get(event.getAlmoxarifadoId());
+        remessa.separar();
     }
 
     @EventSourcingHandler
     public void on(RemessaTransportadaEvent event) {
-        Remessa remessa = remessas.get(event.getAlmoxarifadoId())
-                .transportar();
-        this.remessas.put(remessa.getAlmoxarifadoId(), remessa);
+        Remessa remessa = remessas.get(event.getAlmoxarifadoId());
+        remessa.transportar();
     }
 
     @EventSourcingHandler
     public void on(RemessaEntregueEvent event) {
-        Remessa remessa = remessas.get(event.getAlmoxarifadoId())
-                .entregar();
-        this.remessas.put(remessa.getAlmoxarifadoId(), remessa);
+        Remessa remessa = remessas.get(event.getAlmoxarifadoId());
+        remessa.entregar();
     }
 
     @EventSourcingHandler
     public void on(RemessaOcorrenciaCriadaEvent event) {
-        Remessa remessa = remessas.get(event.getAlmoxarifadoId())
-                .criarOcorrencia();
-        this.remessas.put(remessa.getAlmoxarifadoId(), remessa);
+        Remessa remessa = remessas.get(event.getAlmoxarifadoId());
+        remessa.criarOcorrencia();
     }
 
     @EventSourcingHandler

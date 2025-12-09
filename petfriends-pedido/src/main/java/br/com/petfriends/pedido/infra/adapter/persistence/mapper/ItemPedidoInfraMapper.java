@@ -10,7 +10,7 @@ public class ItemPedidoInfraMapper {
     public ItemPedido toModel(ItemPedidoEntity entity) {
         return new ItemPedido(
                 entity.produtoId(),
-                Dinheiro.valueOf(entity.valorUnitario()),
+                new Dinheiro(entity.valorUnitario()),
                 entity.quantidade()
         );
     }
@@ -18,7 +18,7 @@ public class ItemPedidoInfraMapper {
     public ItemPedidoEntity toEntity(ItemPedido model) {
         return new ItemPedidoEntity(
                 model.getProdutoId(),
-                model.getValorUnitario().getValor(),
+                model.getValorUnitario().valor(),
                 model.getQuantidade()
         );
     }
