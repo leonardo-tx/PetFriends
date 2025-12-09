@@ -8,26 +8,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnderecoInfraMapper {
     public Endereco toModel(EnderecoEntity entity) {
-        return Endereco.valueOf(
+        return new Endereco(
                 entity.rua(),
                 entity.numero(),
                 entity.complemento(),
                 entity.bairro(),
                 entity.cidade(),
                 entity.estado(),
-                CEP.valueOf(entity.cep())
+                new CEP(entity.cep())
         );
     }
 
     public EnderecoEntity toEntity(Endereco model) {
         return new EnderecoEntity(
-                model.getRua(),
-                model.getNumero(),
-                model.getComplemento(),
-                model.getBairro(),
-                model.getCidade(),
-                model.getEstado(),
-                model.getCep().getValor()
+                model.rua(),
+                model.numero(),
+                model.complemento(),
+                model.bairro(),
+                model.cidade(),
+                model.estado(),
+                model.cep().valor()
         );
     }
 }

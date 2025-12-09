@@ -24,7 +24,7 @@ public class CriarPedidoService implements CriarPedidoUseCase {
 
     @Override
     public CompletableFuture<UUID> criar(CriarPedidoCommand command) {
-        CEP cep = CEP.valueOf(command.getCep());
+        CEP cep = new CEP(command.getCep());
         return validarCepPort.cepExiste(cep).flatMap(existe -> {
             if (existe) {
                 return Mono.fromFuture(commandGateway.<UUID>send(command));

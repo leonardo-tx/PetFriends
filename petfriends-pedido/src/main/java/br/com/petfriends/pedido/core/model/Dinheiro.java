@@ -8,26 +8,15 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public final class Dinheiro {
-    private final BigDecimal valor;
-
-    private Dinheiro(BigDecimal valor) {
+public record Dinheiro(@JsonValue BigDecimal valor) {
+    @JsonCreator
+    public Dinheiro {
         if (valor == null) {
             throw new DinheiroNuloException();
         }
         if (valor.compareTo(BigDecimal.ZERO) < 0) {
             throw new DinheiroNegativoException();
         }
-        this.valor = valor.setScale(2, RoundingMode.HALF_UP);
-    }
-
-    @JsonValue
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    @JsonCreator
-    public static Dinheiro valueOf(BigDecimal valor) {
-        return new Dinheiro(valor);
+        valor = valor.setScale(2, RoundingMode.HALF_UP);
     }
 }

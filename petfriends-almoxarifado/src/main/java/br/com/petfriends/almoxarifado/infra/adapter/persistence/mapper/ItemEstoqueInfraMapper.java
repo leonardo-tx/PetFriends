@@ -13,7 +13,6 @@ import java.util.Map;
 
 @Component
 public class ItemEstoqueInfraMapper {
-
     private final ReservaInfraMapper reservaInfraMapper;
 
     public ItemEstoqueInfraMapper(ReservaInfraMapper reservaInfraMapper) {

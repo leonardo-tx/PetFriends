@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 public class EnderecoViewMapper {
     public EnderecoViewDTO toDTO(Endereco endereco) {
         return new EnderecoViewDTO(
-                endereco.getRua(),
-                endereco.getNumero(),
-                endereco.getComplemento(),
-                endereco.getBairro(),
-                endereco.getCidade(),
-                endereco.getEstado(),
-                endereco.getCep().getValor()
+                endereco.rua(),
+                endereco.numero(),
+                endereco.complemento(),
+                endereco.bairro(),
+                endereco.cidade(),
+                endereco.estado(),
+                endereco.cep().valor()
         );
     }
 }

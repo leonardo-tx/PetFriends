@@ -21,6 +21,6 @@ public class AlmoxarifadoViewMapper {
                 .stream()
                 .map(itemEstoqueViewMapper::toDTO)
                 .toList();
-        return new AlmoxarifadoViewDTO(model.getId(), model.getNome().getValor(), estoques);
+        return new AlmoxarifadoViewDTO(model.getId(), model.getNome().valor(), estoques);
     }
 }

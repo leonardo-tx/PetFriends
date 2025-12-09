@@ -21,7 +21,7 @@ public class AlmoxarifadoInfraMapper {
     }
 
     public Almoxarifado toModel(AlmoxarifadoEntity entity) {
-        AlmoxarifadoNome nome = AlmoxarifadoNome.valueOf(entity.nome());
+        AlmoxarifadoNome nome = new AlmoxarifadoNome(entity.nome());
         Collector<ItemEstoqueEntity, ?, HashMap<String, ItemEstoque>> collector = Collectors.toMap(
                 ItemEstoqueEntity::itemId,
                 itemEstoqueInfraMapper::toModel,
@@ -40,6 +40,6 @@ public class AlmoxarifadoInfraMapper {
                 .stream()
                 .map(itemEstoqueInfraMapper::toEntity)
                 .toList();
-        return new AlmoxarifadoEntity(model.getId(), model.getNome().getValor(), estoques);
+        return new AlmoxarifadoEntity(model.getId(), model.getNome().valor(), estoques);
     }
 }

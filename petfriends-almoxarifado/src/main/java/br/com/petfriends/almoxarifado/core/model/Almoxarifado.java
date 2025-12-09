@@ -33,7 +33,7 @@ public class Almoxarifado {
 
     @CommandHandler
     public Almoxarifado(CriarAlmoxarifadoCommand command) {
-        AlmoxarifadoNome nome = AlmoxarifadoNome.valueOf(command.getNome());
+        AlmoxarifadoNome nome = new AlmoxarifadoNome(command.getNome());
         AlmoxarifadoCriadoEvent event = new AlmoxarifadoCriadoEvent(
                 UUID.randomUUID(),
                 Instant.now(),

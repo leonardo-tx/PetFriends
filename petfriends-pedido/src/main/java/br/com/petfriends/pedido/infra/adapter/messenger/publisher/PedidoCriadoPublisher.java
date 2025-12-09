@@ -24,19 +24,19 @@ public class PedidoCriadoPublisher {
     @EventHandler
     public void on(PedidoCriadoEvent event) {
         EnderecoEventDTO endereco = new EnderecoEventDTO(
-                event.getEndereco().getRua(),
-                event.getEndereco().getNumero(),
-                event.getEndereco().getComplemento(),
-                event.getEndereco().getBairro(),
-                event.getEndereco().getCidade(),
-                event.getEndereco().getEstado(),
-                event.getEndereco().getCep().getValor()
+                event.getEndereco().rua(),
+                event.getEndereco().numero(),
+                event.getEndereco().complemento(),
+                event.getEndereco().bairro(),
+                event.getEndereco().cidade(),
+                event.getEndereco().estado(),
+                event.getEndereco().cep().valor()
         );
         List<ItemPedidoEventDTO> items = event.getItems()
                 .stream()
                 .map(i -> new ItemPedidoEventDTO(
                         i.getProdutoId(),
-                        i.getValorUnitario().getValor(),
+                        i.getValorUnitario().valor(),
                         i.getQuantidade())
                 ).toList();
         PedidoCriadoEventDTO dto = new PedidoCriadoEventDTO(

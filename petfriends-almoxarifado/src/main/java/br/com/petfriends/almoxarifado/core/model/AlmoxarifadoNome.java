@@ -5,29 +5,17 @@ import br.com.petfriends.almoxarifado.core.exception.AlmoxarifadoNomeTamanhoInva
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public final class AlmoxarifadoNome {
+public record AlmoxarifadoNome(@JsonValue String valor) {
     public static final int TAMANHO_MINIMO = 4;
     public static final int TAMANHO_MAXIMO = 50;
 
-    private final String valor;
-
-    private AlmoxarifadoNome(String valor) {
+    @JsonCreator
+    public AlmoxarifadoNome {
         if (valor == null) {
             throw new AlmoxarifadoNomeNuloException();
         }
         if (valor.length() < TAMANHO_MINIMO || valor.length() > TAMANHO_MAXIMO) {
             throw new AlmoxarifadoNomeTamanhoInvalidoException();
         }
-        this.valor = valor;
-    }
-
-    @JsonValue
-    public String getValor() {
-        return valor;
-    }
-
-    @JsonCreator
-    public static AlmoxarifadoNome valueOf(String valor) {
-        return new AlmoxarifadoNome(valor);
     }
 }
