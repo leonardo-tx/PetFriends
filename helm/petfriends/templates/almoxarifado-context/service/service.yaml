@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: "{{.Values.petfriends_almoxarifado.name}}-svc"
+spec:
+  selector:
+    app: {{ .Values.petfriends_almoxarifado.name }}
+  type: {{.Values.petfriends_almoxarifado.service.type}}
+  ports:
+    - protocol: TCP
+      {{- if (eq .Values.petfriends_almoxarifado.service.type "NodePort")}}
+      nodePort: {{.Values.petfriends_almoxarifado.service.nodePort}}
+      {{- end}}
+      targetPort: {{.Values.petfriends_almoxarifado.service.targetPort}}
+      port: {{.Values.petfriends_almoxarifado.service.port}}

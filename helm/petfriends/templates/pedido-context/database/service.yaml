@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: "{{.Values.pedido_db.name}}-svc"
+spec:
+  selector:
+    app: {{ .Values.pedido_db.name }}
+  type: {{.Values.pedido_db.service.type}}
+  ports:
+    - protocol: TCP
+      {{- if (eq .Values.pedido_db.service.type "NodePort")}}
+      nodePort: {{.Values.pedido_db.service.nodePort}}
+      {{- end}}
+      targetPort: {{.Values.pedido_db.service.targetPort}}
+      port: {{.Values.pedido_db.service.port}}

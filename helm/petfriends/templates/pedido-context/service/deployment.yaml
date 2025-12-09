@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.petfriends_pedido.name }}-deploy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.petfriends_pedido.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.petfriends_pedido.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.petfriends_pedido.name }}
+    spec:
+      containers:
+        - name: {{ .Values.petfriends_pedido.name }}
+          image: "{{ .Values.petfriends_pedido.image }}:{{ .Values.petfriends_pedido.tag }}"
+          imagePullPolicy: {{ .Values.petfriends_pedido.imagePullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: "{{ .Values.petfriends_pedido.name }}-cm"
+      restartPolicy: Always

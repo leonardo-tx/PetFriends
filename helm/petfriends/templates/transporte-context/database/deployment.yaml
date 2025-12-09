@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.transporte_db.name }}-deploy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.transporte_db.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.transporte_db.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.transporte_db.name }}
+    spec:
+      containers:
+        - name: {{ .Values.transporte_db.name }}
+          image: "{{ .Values.transporte_db.image }}:{{ .Values.transporte_db.tag }}"
+          imagePullPolicy: {{ .Values.transporte_db.imagePullPolicy }}
+      restartPolicy: Always

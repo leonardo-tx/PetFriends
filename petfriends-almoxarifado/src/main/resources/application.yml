@@ -12,11 +12,49 @@ spring:
       auto-index-creation: true
 
   cloud:
+    function:
+      definition: pedidoCriado;pedidoCancelado;pedidoSeparado
+
+    consul:
+      discovery:
+        health-check-path: /actuator/health
+        health-check-url: http://${SERVICE_HOST}:${server.port}/actuator/health
+        health-check-interval: 10s
+        prefer-ip-address: true
+
     stream:
-      function:
-        autodetect: false
+      kafka:
+        binder:
+          brokers: ${KAFKA_BOOTSTRAP_SERVERS}
+          enableObservation: false
+
+      bindings:
+        pedido-reserva-concluido-out-0:
+          destination: pedido-reserva-concluido-events
+          content-type: application/json
+
+        pedido-reserva-falhou-out-0:
+          destination: pedido-reserva-falhou-events
+          content-type: application/json
+
+        pedidoCriado-in-0:
+          destination: pedido-criado-events
+          group: petfriends-almoxarifado
+
+        pedidoCancelado-in-0:
+          destination: pedido-cancelado-events
+          group: petfriends-almoxarifado
+
+        pedidoSeparado-in-0:
+          destination: pedido-separado-events
+          group: petfriends-almoxarifado
 
 axon:
+  serializer:
+    general: jackson
+    events: jackson
+    messages: jackson
+
   axonserver:
     enabled: false
 

@@ -19,6 +19,12 @@ public record PedidoEntity(
     @Field(name = "status")
     PedidoStatus status,
 
+    @Field(name = "endereco")
+    EnderecoEntity endereco,
+
+    @Field(name = "entregaId")
+    String entregaId,
+
     @Field(name = "itens")
     List<ItemPedidoEntity> itens
 ) {

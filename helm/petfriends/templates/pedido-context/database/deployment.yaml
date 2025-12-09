@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.pedido_db.name }}-deploy"
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.pedido_db.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.pedido_db.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.pedido_db.name }}
+    spec:
+      containers:
+        - name: {{ .Values.pedido_db.name }}
+          image: "{{ .Values.pedido_db.image }}:{{ .Values.pedido_db.tag }}"
+          imagePullPolicy: {{ .Values.pedido_db.imagePullPolicy }}
+      restartPolicy: Always

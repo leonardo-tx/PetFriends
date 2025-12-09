@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Values.petfriends_transporte.name }}-cm"
+  namespace: {{ .Release.Namespace }}
+data:
+  SERVICE_HOST: "{{ .Values.petfriends_transporte.name }}-svc"
+  MONGODB_URI: "mongodb://{{ .Values.transporte_db.name }}-svc:{{ .Values.transporte_db.service.port }}/{{ .Values.petfriends_transporte.cm.DATABASE_NAME }}"
+  MONGODB_DATABASE: "{{ .Values.petfriends_transporte.cm.DATABASE_NAME }}"
+  SPRING_CLOUD_CONSUL_HOST: "{{ .Values.consul.name }}-svc"
+  SPRING_CLOUD_CONSUL_PORT: "{{ .Values.consul.service.http.port }}"
+  KAFKA_BOOTSTRAP_SERVERS: "{{ .Values.kafka.name }}-svc:{{ .Values.kafka.service.broker.port }}"
